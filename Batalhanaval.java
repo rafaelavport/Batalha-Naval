@@ -7,13 +7,15 @@ import java.util.Scanner;
 public class Batalhanaval {
 
     private static  int TAMANHO_MAPA = 10;
-    private static  int QUANTIDADE_BARCOS = 4;
+    private static  int QUANTIDADE_BARCOS = 3;
     private static  int TAMANHO_MAXIMO_BARCO = 4;
 
     private char[][] mapaJogador;
     private char[][] mapaOponente;
     private Random random;
     private Scanner scanner;
+    private String nome;
+    private String nomeOponente;
 
     public Batalhanaval() {
         mapaJogador = new char[TAMANHO_MAPA][TAMANHO_MAPA];
@@ -24,22 +26,27 @@ public class Batalhanaval {
 
     public void iniciarJogo() {
         System.out.println("Bem-vindo ao jogo Batalha Naval!");
+        System.out.println("Como devo te chamar?");
+        String nome = scanner.next();
 
         System.out.println("Escolha uma opção:");
-        System.out.println("1 - Jogar contra outro jogador");
+        System.out.println("1 - Jogar contra jogador");
         System.out.println("2 - Jogar contra o computador");
         int opcao = scanner.nextInt();
 
         switch (opcao) {
             case 1:
-                System.out.println("Jogador 1, aloque seus barcos:");
+                System.out.println(nome+", aloque seus barcos:");
                 alocarBarcos(mapaJogador, false);
+                
+                System.out.println("segundo jogador, como é seu nome?");
+                String nomeOponente = scanner.next();
 
-                System.out.println("Jogador 2, aloque seus barcos:");
+                System.out.println(nomeOponente+", aloque seus barcos:");
                 alocarBarcos(mapaOponente, false);
                 break;
             case 2:
-                System.out.println("Jogador, aloque seus barcos:");
+                System.out.println(nome+", aloque seus barcos:");
                 alocarBarcos(mapaJogador, false);
 
                 System.out.println("Computador, alocando os barcos...");
@@ -51,8 +58,10 @@ public class Batalhanaval {
         }
 
         while (true) {
-            System.out.println("Jogador, é sua vez:");
-            realizarAtaque(mapaOponente, true);
+           switch (opcao) {
+           case 1:
+            System.out.println(nome+", é sua vez:");
+            realizarAtaque(mapaOponente, false);
 
             boolean jogoAcabou = verificarFimDoJogo(mapaOponente);
             if (jogoAcabou) {
@@ -60,14 +69,15 @@ public class Batalhanaval {
                 break;
             }
 
-            System.out.println("Computador, é sua vez:");
-            realizarAtaque(mapaJogador, true);
+            System.out.println("Oponente, é sua vez:");
+            realizarAtaque(mapaJogador, false);
 
             jogoAcabou = verificarFimDoJogo(mapaJogador);
             if (jogoAcabou) {
-                System.out.println("O computador venceu! Todos os seus barcos foram afundados.");
+                System.out.println("O oponente venceu! Todos os seus barcos foram afundados.");
                 break;
             }
+           }
         }
     }
 
